@@ -5,4 +5,10 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_recommendations">There are not recommendations yet</string>
+    <string name="no_recommendations_add">Add one</string>
+    <string name="no_movies">There are not movies on cinemas</string>
 </resources>
