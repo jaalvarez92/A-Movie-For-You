@@ -33,7 +33,7 @@ public class NowOnCinemasPresenter implements NowOnCinemasContract.Presenter {
 
     @Override
     public void start() {
-        loadMovies(false);
+        loadMovies(true);
     }
 
 

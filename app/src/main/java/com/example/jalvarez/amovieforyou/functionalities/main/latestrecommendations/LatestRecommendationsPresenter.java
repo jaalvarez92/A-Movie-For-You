@@ -28,7 +28,7 @@ public class LatestRecommendationsPresenter implements LatestRecommendationsCont
 
     @Override
     public void start() {
-        loadRecommendations(false);
+        loadRecommendations(true);
     }
 
 

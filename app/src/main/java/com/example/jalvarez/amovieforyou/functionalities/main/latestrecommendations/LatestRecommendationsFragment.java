@@ -103,12 +103,20 @@ public class LatestRecommendationsFragment extends Fragment implements LatestRec
                 (ProgressBar) getView().findViewById(R.id.progress_bar);
 
         // Make sure setRefreshing() is called after the layout is done with everything else.
-        progressBar.post(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.VISIBLE);
-            }
-        });
+        if (active)
+            progressBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.VISIBLE);
+                }
+            });
+        else
+            progressBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
     }
 
     @Override

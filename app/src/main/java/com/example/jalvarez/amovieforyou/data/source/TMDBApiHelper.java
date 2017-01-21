@@ -24,5 +24,9 @@ public class TMDBApiHelper {
     }
 
 
+    public void getMovie(String mId, Callback<com.uwetrottmann.tmdb2.entities.Movie> callback){
+        moviesService.summary(Integer.parseInt(mId),"en", null).enqueue(callback);
+    }
+
 
 }

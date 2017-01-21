@@ -1,18 +1,21 @@
 package com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.jalvarez.amovieforyou.R;
 import com.example.jalvarez.amovieforyou.data.Movie;
+import com.example.jalvarez.amovieforyou.functionalities.main.moviedetail.MovieDetailActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -73,13 +76,19 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
         View root = inflater.inflate(R.layout.fragment_now_on_cinemas, container, false);
 
         // Set up tasks view
-        ListView listView = (ListView) root.findViewById(R.id.movies_list);
+        RecyclerView listView = (RecyclerView) root.findViewById(R.id.movies_list);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        listView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        listView.setLayoutManager(mLayoutManager);
         listView.setAdapter(mListAdapter);
 
         // Set up  no tasks view
         noMoviesView = root.findViewById(R.id.noMovies);
-
-
         return root;
     }
 
@@ -93,12 +102,20 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
                 (ProgressBar) getView().findViewById(R.id.progress_bar);
 
         // Make sure setRefreshing() is called after the layout is done with everything else.
-        progressBar.post(new Runnable() {
+        if (active)
+            progressBar.post(new Runnable() {
             @Override
             public void run() {
                 progressBar.setVisibility(View.VISIBLE);
             }
         });
+        else
+            progressBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
     }
 
     @Override
@@ -109,7 +126,9 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
 
     @Override
     public void showMovieDetailsUi(String movieId) {
-
+        Intent intent = new Intent(getActivity(), MovieDetailActivity.class);
+        intent.putExtra(MovieDetailActivity.ID_PARAM, movieId);
+        startActivity(intent);
     }
 
     @Override
@@ -124,7 +143,60 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
 
 
 
-    private static class MoviesAdapter extends BaseAdapter {
+    private static class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder> {
+
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            // create a new view
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.movie_item, parent, false);
+            // set the view's size, margins, paddings and layout parameters
+
+            ViewHolder vh = new ViewHolder(v);
+            return vh;
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            // - get element from your dataset at this position
+            final Movie movie = mMovies.get(position);
+            // - replace the contents of the view with that element
+            holder.mTitleTextView.setText(movie.getTitle());
+            holder.mPosterImageView.setImageURI(movie.getImageURL());
+
+            holder.mContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemListener.onMovieClick(movie);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return mMovies.size();
+        }
+
+        // Provide a reference to the views for each data item
+        // Complex data items may need more than one view per item, and
+        // you provide access to all the views for a data item in a view holder
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            // each data item is just a string in this case
+            public View mContainer;
+            public TextView mTitleTextView;
+            public SimpleDraweeView mPosterImageView;
+
+
+            public ViewHolder(View v) {
+                super(v);
+                mContainer = v;
+                mTitleTextView = (TextView) v.findViewById(R.id.title);
+                mPosterImageView = (SimpleDraweeView) v.findViewById(R.id.image);
+
+            }
+        }
+
 
         private List<Movie> mMovies;
         private MovieItemListener mItemListener;
@@ -141,47 +213,6 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
 
         private void setList(List<Movie> movies) {
             mMovies = checkNotNull(movies);
-        }
-
-        @Override
-        public int getCount() {
-            return mMovies.size();
-        }
-
-        @Override
-        public Movie getItem(int i) {
-            return mMovies.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            View rowView = view;
-            if (rowView == null) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                rowView = inflater.inflate(R.layout.movie_item, viewGroup, false);
-            }
-
-            final Movie movie = getItem(i);
-
-            TextView titleTV = (TextView) rowView.findViewById(R.id.title);
-            SimpleDraweeView image = (SimpleDraweeView) rowView.findViewById(R.id.image);
-
-            titleTV.setText(movie.getTitle());
-            image.setImageURI(movie.getImageURL());
-
-            rowView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mItemListener.onMovieClick(movie);
-                }
-            });
-
-            return rowView;
         }
     }
 

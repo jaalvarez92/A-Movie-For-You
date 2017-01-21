@@ -35,7 +35,6 @@ dependencies {
     compile "com.uwetrottmann.tmdb2:tmdb-java:$rootProject.tmdbVersion"
     compile "com.facebook.fresco:fresco:$rootProject.frescoVersion"
 
-
     // Dependencies for local unit tests
     testCompile "junit:junit:$rootProject.ext.junitVersion"
     testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"

@@ -2,6 +2,7 @@ package com.example.jalvarez.amovieforyou.functionalities.main;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 
 import com.example.jalvarez.amovieforyou.R;
 import com.example.jalvarez.amovieforyou.functionalities.main.latestrecommendations.LatestRecommendationsFragment;
+import com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas.NowOnCinemasContract;
 import com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas.NowOnCinemasFragment;
 import com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas.NowOnCinemasPresenter;
 import com.example.jalvarez.amovieforyou.util.ActivityUtils;
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_latest_recommendations);
+        setContentView(R.layout.activity_main);
 
         // Setup the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -46,17 +48,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Set the fragment
-        LatestRecommendationsFragment latestRecommendationsFragment =
-                (LatestRecommendationsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (latestRecommendationsFragment == null) {
-            // Create the fragment
-            latestRecommendationsFragment = LatestRecommendationsFragment.newInstance();
+
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+
+        if (fragment == null) {
+            fragment = LatestRecommendationsFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), latestRecommendationsFragment, R.id.contentFrame);
+                    getSupportFragmentManager(), fragment, R.id.contentFrame);
         }
 
-        // Create the presenter
-        mLatestRecommendationsPresenter = new LatestRecommendationsPresenter(latestRecommendationsFragment);
+
+        if (fragment instanceof LatestRecommendationsFragment) {
+            mLatestRecommendationsPresenter = new LatestRecommendationsPresenter((LatestRecommendationsFragment) fragment);
+        }
+        else if (fragment instanceof NowOnCinemasFragment) {
+            mNowOnCinemasPresenter = new NowOnCinemasPresenter((NowOnCinemasFragment) fragment);
+        }
+
+
 
     }
 
