@@ -2,7 +2,9 @@ package com.example.jalvarez.amovieforyou.data.source;
 
 import com.example.jalvarez.amovieforyou.data.Movie;
 import com.uwetrottmann.tmdb2.Tmdb;
+import com.uwetrottmann.tmdb2.entities.AppendToResponse;
 import com.uwetrottmann.tmdb2.entities.MovieResultsPage;
+import com.uwetrottmann.tmdb2.enumerations.AppendToResponseItem;
 import com.uwetrottmann.tmdb2.services.MoviesService;
 
 import java.util.List;
@@ -25,8 +27,10 @@ public class TMDBApiHelper {
 
 
     public void getMovie(String mId, Callback<com.uwetrottmann.tmdb2.entities.Movie> callback){
-        moviesService.summary(Integer.parseInt(mId),"en", null).enqueue(callback);
+
+        moviesService.summary(Integer.parseInt(mId),"en", new AppendToResponse(new AppendToResponseItem[]{AppendToResponseItem.VIDEOS})).enqueue(callback);
     }
+
 
 
 }

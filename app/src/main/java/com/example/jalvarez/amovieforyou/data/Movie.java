@@ -3,6 +3,11 @@ package com.example.jalvarez.amovieforyou.data;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Objects;
+import com.google.common.collect.ArrayListMultimap;
+import com.uwetrottmann.tmdb2.entities.Videos;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /**
  * Created by jalvarez on 1/13/17.
@@ -20,21 +25,46 @@ public class Movie {
     private final String mSynopsis;
 
     @NonNull
-    private final String mImageURL;
+    private final String mPosterURL;
+
+    @NonNull
+    private final String mBackdropURL;
+
+    @NonNull
+    private final ArrayList<Video> mVideos;
 
 
-    public Movie(@NonNull String id, @NonNull String title, @NonNull String synopsis, @NonNull String imageURL){
+    @NonNull
+    private final double mRating;
+
+
+    public Movie(@NonNull String id, @NonNull String title, @NonNull String synopsis, @NonNull String posterURL, @NonNull double rating){
         mId = id;
         mTitle = title;
         mSynopsis = synopsis;
-        mImageURL = imageURL;
+        mPosterURL = posterURL;
+        mBackdropURL = posterURL;
+        mRating = rating;
+        mVideos = new ArrayList<>();
     }
 
     public Movie(@NonNull com.uwetrottmann.tmdb2.entities.Movie movie){
+        String tmdbPosterResourcePrefix = "http://image.tmdb.org/t/p/w185/";
+        String tmdbBackdropResourcePrefix = "http://image.tmdb.org/t/p/w780/";
         mId = movie.id.toString();
         mTitle = movie.title;
         mSynopsis = movie.overview;
-        mImageURL = "http://image.tmdb.org/t/p/w185/" + movie.poster_path;
+        mPosterURL = tmdbPosterResourcePrefix + movie.poster_path;
+        mBackdropURL = tmdbBackdropResourcePrefix + movie.backdrop_path;
+        mRating = movie.vote_average / 2;
+        mVideos = new ArrayList<>();
+        if (movie.videos != null && movie.videos.results != null) {
+            for (Videos.Video video : movie.videos.results) {
+                if (video.site.equals("YouTube")) {
+                    mVideos.add(new Video(video));
+                }
+            }
+        }
     }
 
     public String getId() {
@@ -49,8 +79,20 @@ public class Movie {
         return mSynopsis;
     }
 
-    public String getImageURL(){
-        return mImageURL;
+    public String getPosterURL(){
+        return mPosterURL;
+    }
+
+    public String getBackdropURL(){
+        return mBackdropURL;
+    }
+
+    public double getRating() {
+        return mRating;
+    }
+
+    public ArrayList<Video> getVideos() {
+        return mVideos;
     }
 
     @Override

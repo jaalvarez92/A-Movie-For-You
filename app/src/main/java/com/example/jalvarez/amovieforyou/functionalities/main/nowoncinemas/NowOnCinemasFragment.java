@@ -9,8 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.jalvarez.amovieforyou.R;
@@ -163,8 +163,10 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
             final Movie movie = mMovies.get(position);
             // - replace the contents of the view with that element
             holder.mTitleTextView.setText(movie.getTitle());
-            holder.mPosterImageView.setImageURI(movie.getImageURL());
-
+            holder.mSynopsisTextView.setText(movie.getSynopsis());
+            holder.mPosterImageView.setImageURI(movie.getPosterURL());
+            holder.mPosterImageView.setAspectRatio(0.67f);
+            holder.mRatingBar.setRating((float) movie.getRating());
             holder.mContainer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -185,15 +187,18 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
             // each data item is just a string in this case
             public View mContainer;
             public TextView mTitleTextView;
+            public TextView mSynopsisTextView;
             public SimpleDraweeView mPosterImageView;
+            public RatingBar mRatingBar;
 
 
             public ViewHolder(View v) {
                 super(v);
                 mContainer = v;
                 mTitleTextView = (TextView) v.findViewById(R.id.title);
+                mSynopsisTextView = (TextView) v.findViewById(R.id.synopsis);
                 mPosterImageView = (SimpleDraweeView) v.findViewById(R.id.image);
-
+                mRatingBar = (RatingBar) v.findViewById(R.id.rating);
             }
         }
 

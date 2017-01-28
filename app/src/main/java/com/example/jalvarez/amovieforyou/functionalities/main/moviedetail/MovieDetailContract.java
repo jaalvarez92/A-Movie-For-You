@@ -6,6 +6,7 @@ import com.example.jalvarez.amovieforyou.base.BasePresenter;
 import com.example.jalvarez.amovieforyou.base.BaseView;
 import com.example.jalvarez.amovieforyou.data.Movie;
 import com.example.jalvarez.amovieforyou.data.Recommendation;
+import com.example.jalvarez.amovieforyou.data.Video;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class MovieDetailContract {
         void showError();
 
         boolean isActive();
+
+        void showVideo(Video video);
 
     }
 
