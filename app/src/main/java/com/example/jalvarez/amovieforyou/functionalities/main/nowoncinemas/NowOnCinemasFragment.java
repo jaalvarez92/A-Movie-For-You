@@ -24,10 +24,15 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link NowOnCinemasFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by jalvarez on 1/13/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
+
 public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContract.View {
 
 
@@ -41,11 +46,6 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
     public NowOnCinemasFragment() {
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @return A new instance of fragment NowOnCinemasFragment.
-     */
     public static NowOnCinemasFragment newInstance() {
         return new NowOnCinemasFragment();
     }
@@ -72,23 +72,18 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_now_on_cinemas, container, false);
 
-        // Set up tasks view
         RecyclerView listView = (RecyclerView) root.findViewById(R.id.movies_list);
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         listView.setHasFixedSize(true);
 
-        // use a linear layout manager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         listView.setLayoutManager(mLayoutManager);
         listView.setAdapter(mListAdapter);
 
-        // Set up  no tasks view
         noMoviesView = root.findViewById(R.id.noMovies);
+
         return root;
     }
 
@@ -101,7 +96,6 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
         final ProgressBar progressBar =
                 (ProgressBar) getView().findViewById(R.id.progress_bar);
 
-        // Make sure setRefreshing() is called after the layout is done with everything else.
         if (active)
             progressBar.post(new Runnable() {
             @Override
@@ -151,17 +145,12 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
             // create a new view
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.movie_item, parent, false);
-            // set the view's size, margins, paddings and layout parameters
-
-            ViewHolder vh = new ViewHolder(v);
-            return vh;
+            return new ViewHolder(v);
         }
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            // - get element from your dataset at this position
             final Movie movie = mMovies.get(position);
-            // - replace the contents of the view with that element
             holder.mTitleTextView.setText(movie.getTitle());
             holder.mSynopsisTextView.setText(movie.getSynopsis());
             holder.mPosterImageView.setImageURI(movie.getPosterURL());
@@ -180,19 +169,15 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
             return mMovies.size();
         }
 
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
-            public View mContainer;
-            public TextView mTitleTextView;
-            public TextView mSynopsisTextView;
-            public SimpleDraweeView mPosterImageView;
-            public RatingBar mRatingBar;
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            View mContainer;
+            TextView mTitleTextView;
+            TextView mSynopsisTextView;
+            SimpleDraweeView mPosterImageView;
+            RatingBar mRatingBar;
 
 
-            public ViewHolder(View v) {
+            ViewHolder(View v) {
                 super(v);
                 mContainer = v;
                 mTitleTextView = (TextView) v.findViewById(R.id.title);
@@ -206,12 +191,12 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
         private List<Movie> mMovies;
         private MovieItemListener mItemListener;
 
-        public MoviesAdapter(List<Movie> movies, MovieItemListener itemListener) {
+        MoviesAdapter(List<Movie> movies, MovieItemListener itemListener) {
             setList(movies);
             mItemListener = itemListener;
         }
 
-        public void replaceData(List<Movie> movies) {
+        void replaceData(List<Movie> movies) {
             setList(movies);
             notifyDataSetChanged();
         }

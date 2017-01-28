@@ -1,24 +1,27 @@
 package com.example.jalvarez.amovieforyou.data.source;
 
-import com.example.jalvarez.amovieforyou.data.Movie;
 import com.uwetrottmann.tmdb2.Tmdb;
 import com.uwetrottmann.tmdb2.entities.AppendToResponse;
 import com.uwetrottmann.tmdb2.entities.MovieResultsPage;
 import com.uwetrottmann.tmdb2.enumerations.AppendToResponseItem;
 import com.uwetrottmann.tmdb2.services.MoviesService;
 
-import java.util.List;
-
 import retrofit2.Callback;
 
 
 /**
  * Created by jalvarez on 1/16/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
 
 public class TMDBApiHelper {
-    Tmdb tmdb = new Tmdb("49870ba460de9c5d43ed226e5f316b7c");
-    MoviesService moviesService = tmdb.moviesService();
+    private Tmdb tmdb = new Tmdb("49870ba460de9c5d43ed226e5f316b7c");
+    private MoviesService moviesService = tmdb.moviesService();
 
 
     public void getMoviesOnCinemas(Callback<MovieResultsPage> callback){
@@ -27,8 +30,7 @@ public class TMDBApiHelper {
 
 
     public void getMovie(String mId, Callback<com.uwetrottmann.tmdb2.entities.Movie> callback){
-
-        moviesService.summary(Integer.parseInt(mId),"en", new AppendToResponse(new AppendToResponseItem[]{AppendToResponseItem.VIDEOS})).enqueue(callback);
+        moviesService.summary(Integer.parseInt(mId),"en", new AppendToResponse(AppendToResponseItem.VIDEOS)).enqueue(callback);
     }
 
 

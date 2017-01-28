@@ -17,6 +17,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by jalvarez on 1/13/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
 
 public class NowOnCinemasPresenter implements NowOnCinemasContract.Presenter {
@@ -33,14 +39,13 @@ public class NowOnCinemasPresenter implements NowOnCinemasContract.Presenter {
 
     @Override
     public void start() {
-        loadMovies(true);
-    }
-
-
-    @Override
-    public void loadMovies() {
+        loadMovies(mFirstLoad);
+        if (mFirstLoad){
+            mFirstLoad = false;
+        }
 
     }
+
 
     /**
      * @param showLoadingUI Pass in true to display a loading icon in the UI
@@ -54,21 +59,25 @@ public class NowOnCinemasPresenter implements NowOnCinemasContract.Presenter {
         tmdbApiHelper.getMoviesOnCinemas(new Callback<MovieResultsPage>() {
             @Override
             public void onResponse(Call<MovieResultsPage> call, Response<MovieResultsPage> response) {
-                List<com.uwetrottmann.tmdb2.entities.Movie> moviesResponse = response.body().results;
-                List<Movie> movies = new ArrayList<Movie>();
-                for (com.uwetrottmann.tmdb2.entities.Movie movie : moviesResponse){
-                    movies.add(new Movie(movie));
-                }
-                processMovies(movies);
-                if (showLoadingUI) {
-                    mNowOnCinemasView.setLoadingIndicator(false);
+                if (mNowOnCinemasView.isActive()) {
+                    List<com.uwetrottmann.tmdb2.entities.Movie> moviesResponse = response.body().results;
+                    List<Movie> movies = new ArrayList<>();
+                    for (com.uwetrottmann.tmdb2.entities.Movie movie : moviesResponse) {
+                        movies.add(new Movie(movie));
+                    }
+                    processMovies(movies);
+                    if (showLoadingUI) {
+                        mNowOnCinemasView.setLoadingIndicator(false);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<MovieResultsPage> call, Throwable t) {
-                if (showLoadingUI) {
-                    mNowOnCinemasView.setLoadingIndicator(false);
+                if (mNowOnCinemasView.isActive()) {
+                    if (showLoadingUI) {
+                        mNowOnCinemasView.setLoadingIndicator(false);
+                    }
                 }
             }
         });

@@ -1,45 +1,42 @@
 package com.example.jalvarez.amovieforyou.functionalities.main.moviedetail;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.jalvarez.amovieforyou.R;
 import com.example.jalvarez.amovieforyou.data.Movie;
 import com.example.jalvarez.amovieforyou.data.Video;
-import com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas.NowOnCinemasContract;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link MovieDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by jalvarez on 1/13/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
-public class MovieDetailFragment extends Fragment implements MovieDetailContract.View {
 
+public class MovieDetailFragment extends Fragment implements MovieDetailContract.View {
 
     private MovieDetailContract.Presenter mPresenter;
 
-    public MovieDetailFragment() {
-    }
+    public MovieDetailFragment() { }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     * @return A new instance of fragment MovieDetailFragment.
-     */
     public static MovieDetailFragment newInstance() {
         return new MovieDetailFragment();
     }
@@ -95,39 +92,43 @@ public class MovieDetailFragment extends Fragment implements MovieDetailContract
 
     @Override
     public void showMovie(Movie movie) {
-        ((TextView) getView().findViewById(R.id.title)).setText(movie.getTitle());
-        ((TextView) getView().findViewById(R.id.synopsis)).setText(movie.getSynopsis());
-        ((SimpleDraweeView) getView().findViewById(R.id.backdrop)).setImageURI(movie.getBackdropURL());
-        ((SimpleDraweeView) getView().findViewById(R.id.backdrop)).setAspectRatio(1.78f);
-        ((LinearLayout)getView().findViewById(R.id.videosContainer)).removeAllViews();
-        for(final Video video: movie.getVideos()) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.video_item, null);
-            view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            ((TextView) view.findViewById(R.id.title)).setText(video.getName());
-            ((LinearLayout) getView().findViewById(R.id.videosContainer)).addView(view);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showVideo(video);
-                }
-            });
+        View view = getView();
+        if (view != null) {
+            ((TextView) view.findViewById(R.id.title)).setText(movie.getTitle());
+            ((TextView) view.findViewById(R.id.synopsis)).setText(movie.getSynopsis());
+            ((SimpleDraweeView) view.findViewById(R.id.backdrop)).setImageURI(movie.getBackdropURL());
+            ((SimpleDraweeView) view.findViewById(R.id.backdrop)).setAspectRatio(1.78f);
+            ((RatingBar) view.findViewById(R.id.rating)).setRating((float) movie.getRating());
+            ((LinearLayout) view.findViewById(R.id.videosContainer)).removeAllViews();
+            view.findViewById(R.id.rating).setVisibility(View.VISIBLE);
+            for (final Video video : movie.getVideos()) {
+                View videoView = View.inflate(getActivity(), R.layout.video_item, null);
+                videoView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                ((TextView) videoView.findViewById(R.id.title)).setText(video.getName());
+                ((LinearLayout) view.findViewById(R.id.videosContainer)).addView(videoView);
+                videoView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showVideo(video);
+                    }
+                });
+            }
         }
     }
 
     @Override
     public void showError() {
-
+        Log.d(MovieDetailFragment.class.getName(), "Error while loding movie detail");
     }
 
     @Override
     public boolean isActive() {
-        return false;
+        return isAdded();
     }
 
     @Override
     public void showVideo(Video video) {
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(video.getURL())));
-
     }
 
 }

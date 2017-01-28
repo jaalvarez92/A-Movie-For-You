@@ -1,12 +1,7 @@
 package com.example.jalvarez.amovieforyou.functionalities.main.moviedetail;
 
 import com.example.jalvarez.amovieforyou.data.Movie;
-import com.example.jalvarez.amovieforyou.data.Recommendation;
-import com.example.jalvarez.amovieforyou.data.dummy.RecommendationsDummyData;
 import com.example.jalvarez.amovieforyou.data.source.TMDBApiHelper;
-
-import java.util.Arrays;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -16,9 +11,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by jalvarez on 1/13/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
 
-public class MovieDetailPresenter implements MovieDetailContract.Presenter {
+class MovieDetailPresenter implements MovieDetailContract.Presenter {
 
     private final MovieDetailContract.View mMovieDetail;
     private boolean mFirstLoad = true;
@@ -26,7 +27,7 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
 
 
 
-    public MovieDetailPresenter(MovieDetailContract.View movieDetailView, String id) {
+    MovieDetailPresenter(MovieDetailContract.View movieDetailView, String id) {
         mMovieDetail = checkNotNull(movieDetailView, "tasksView cannot be null!");
         mMovieDetail.setPresenter(this);
         mId = id;
@@ -34,9 +35,11 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
 
     @Override
     public void start() {
-        loadMovie(true);
+        loadMovie(mFirstLoad);
+        if (mFirstLoad){
+            mFirstLoad = false;
+        }
     }
-
 
 
     /**
@@ -48,29 +51,29 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
         }
 
         new TMDBApiHelper().getMovie(mId, new Callback<com.uwetrottmann.tmdb2.entities.Movie>() {
+
             @Override
             public void onResponse(Call<com.uwetrottmann.tmdb2.entities.Movie> call, Response<com.uwetrottmann.tmdb2.entities.Movie> response) {
-
-                Movie movie = new Movie(response.body());
-                processMovie(movie);
-                if (showLoadingUI) {
-                    mMovieDetail.setLoadingIndicator(false);
+                if (mMovieDetail.isActive()) {
+                    Movie movie = new Movie(response.body());
+                    processMovie(movie);
+                    if (showLoadingUI) {
+                        mMovieDetail.setLoadingIndicator(false);
+                    }
                 }
-
             }
 
             @Override
             public void onFailure(Call<com.uwetrottmann.tmdb2.entities.Movie> call, Throwable t) {
-
-                if (showLoadingUI) {
-                    mMovieDetail.setLoadingIndicator(false);
+                if (mMovieDetail.isActive()) {
+                    if (showLoadingUI) {
+                        mMovieDetail.setLoadingIndicator(false);
+                        processError();
+                    }
                 }
-
             }
+
         });
-
-
-
 
     }
 
@@ -80,13 +83,9 @@ public class MovieDetailPresenter implements MovieDetailContract.Presenter {
     }
 
     private void processError() {
-//        mMovieDetail.showNoRecommendations();
+        mMovieDetail.showError();
     }
 
 
 
-    @Override
-    public void loadMovie() {
-
-    }
 }

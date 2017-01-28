@@ -3,14 +3,18 @@ package com.example.jalvarez.amovieforyou.data;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ArrayListMultimap;
 import com.uwetrottmann.tmdb2.entities.Videos;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
  * Created by jalvarez on 1/13/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
 
 public class Movie {
@@ -33,12 +37,10 @@ public class Movie {
     @NonNull
     private final ArrayList<Video> mVideos;
 
-
-    @NonNull
     private final double mRating;
 
 
-    public Movie(@NonNull String id, @NonNull String title, @NonNull String synopsis, @NonNull String posterURL, @NonNull double rating){
+    public Movie(@NonNull String id, @NonNull String title, @NonNull String synopsis, @NonNull String posterURL, double rating){
         mId = id;
         mTitle = title;
         mSynopsis = synopsis;

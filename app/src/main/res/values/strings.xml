@@ -11,4 +11,11 @@
     <string name="no_recommendations">There are not recommendations yet</string>
     <string name="no_recommendations_add">Add one</string>
     <string name="no_movies">There are not movies on cinemas</string>
+
+
+
+
+
+    <string name="short_text_tools_default">Lorem ipsum dolor sit amet</string>
+    <string name="long_text_tools_default"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec risus neque, pellentesque ac quam accumsan, commodo aliquam elit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nunc viverra pharetra elit, ut condimentum massa cursus eu. Aliquam leo nisl, sagittis et est et, volutpat sagittis purus. Aenean velit neque, finibus ut magna eu, varius placerat ipsum. Morbi rhoncus dui at purus laoreet blandit. Vestibulum vitae dignissim quam. Nullam id ultrices ex, id tempus purus.</string>
 </resources>

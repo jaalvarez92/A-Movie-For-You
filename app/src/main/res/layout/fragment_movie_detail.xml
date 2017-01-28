@@ -1,14 +1,25 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.jalvarez.amovieforyou.functionalities.main.moviedetail.MovieDetailFragment">
 
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progress_bar"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,29 +29,42 @@
             <com.facebook.drawee.view.SimpleDraweeView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/backdrop" />
+                android:id="@+id/backdrop"
+                fresco:placeholderImage="@drawable/backdrop_placeholder"
+                fresco:placeholderImageScaleType="fitCenter"
+                tools:src="@drawable/backdrop_dummy"
+                tools:actualImageSrc="@drawable/backdrop_dummy"
+                tools:layout_height="200dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/title"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                tools:text="Title"/>
+                android:orientation="vertical"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/synopsis"
-                android:textSize="14sp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                tools:text="Synopsis"/>
+                <TextView
+                    style="@style/AMFYTheme.TextViewTitle"
+                    android:id="@+id/title"
+                    android:layout_marginTop="20dp"
+                    tools:text="@string/short_text_tools_default"/>
+
+                <RatingBar
+                    style="@style/AMFYTheme.RatingBar"
+                    android:id="@+id/rating"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <TextView
+                    style="@style/AMFYTheme.TextViewLongDescription"
+                    android:id="@+id/synopsis"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    tools:text="@string/long_text_tools_default"/>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -48,19 +72,26 @@
                 android:orientation="vertical"
                 android:id="@+id/videosContainer">
 
+                <include
+                    layout="@layout/video_item"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <include
+                    layout="@layout/video_item"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <include
+                    layout="@layout/video_item"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
-
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progress_bar"
-        android:layout_centerInParent="true"
-        android:visibility="gone"/>
 
 
 </RelativeLayout>

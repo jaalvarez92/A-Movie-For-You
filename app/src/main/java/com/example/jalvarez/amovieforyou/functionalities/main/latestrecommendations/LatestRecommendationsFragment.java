@@ -20,10 +20,15 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link LatestRecommendationsFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by jalvarez on 1/13/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
+
 public class LatestRecommendationsFragment extends Fragment implements LatestRecommendationsContract.View {
 
 
@@ -32,10 +37,6 @@ public class LatestRecommendationsFragment extends Fragment implements LatestRec
     private RecommendationsAdapter mListAdapter;
 
     private View mNoRecommendationsView;
-
-    private TextView mNoRecommendationsAddView;
-
-
 
 
     public LatestRecommendationsFragment() {
@@ -81,15 +82,13 @@ public class LatestRecommendationsFragment extends Fragment implements LatestRec
 
         // Set up  no tasks view
         mNoRecommendationsView = root.findViewById(R.id.noRecommendations);
-        mNoRecommendationsAddView = (TextView) root.findViewById(R.id.noRecommendationsAdd);
-        mNoRecommendationsAddView.setOnClickListener(new View.OnClickListener() {
+        TextView noRecommendationsAddView = (TextView) root.findViewById(R.id.noRecommendationsAdd);
+        noRecommendationsAddView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                showAddTask();
             }
         });
-
-
         return root;
     }
 
@@ -147,12 +146,12 @@ public class LatestRecommendationsFragment extends Fragment implements LatestRec
         private List<Recommendation> mRecommendations;
         private RecommendationItemListener mItemListener;
 
-        public RecommendationsAdapter(List<Recommendation> recommendations, RecommendationItemListener itemListener) {
+        RecommendationsAdapter(List<Recommendation> recommendations, RecommendationItemListener itemListener) {
             setList(recommendations);
             mItemListener = itemListener;
         }
 
-        public void replaceData(List<Recommendation> recommendations) {
+        void replaceData(List<Recommendation> recommendations) {
             setList(recommendations);
             notifyDataSetChanged();
         }

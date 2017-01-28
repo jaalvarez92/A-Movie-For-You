@@ -6,6 +6,12 @@ import com.uwetrottmann.tmdb2.entities.Videos;
 
 /**
  * Created by jalvarez on 1/27/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
 
 public class Video {
@@ -17,12 +23,7 @@ public class Video {
     private final String mURL;
 
 
-    public Video(String name, String URL){
-        mName = name;
-        mURL = URL;
-    }
-
-    public Video(Videos.Video video){
+    Video(Videos.Video video){
         mName = video.name;
         mURL = "https://www.youtube.com/watch?v=" + video.key;
     }

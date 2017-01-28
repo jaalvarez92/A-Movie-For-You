@@ -33,8 +33,9 @@
                 android:id="@+id/image"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                fresco:placeholderImage="@mipmap/ic_launcher"
-                fresco:actualImageScaleType="fitCenter"/>
+                tools:layout_width="130dp"
+                fresco:placeholderImage="@drawable/poster_placeholder"
+                fresco:placeholderImageScaleType="fitCenter"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,34 +45,24 @@
                 android:padding="5dp">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/AMFYTheme.TextViewTitle"
                     android:id="@+id/title"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
                     android:lines="1"
                     android:ellipsize="end"
-                    tools:text="Title"/>
+                    tools:text="@string/short_text_tools_default"/>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/AMFYTheme.TextViewLongDescription"
                     android:id="@+id/synopsis"
-                    android:textSize="14sp"
                     android:lines="5"
                     android:ellipsize="end"
-                    tools:text="Title"/>
+                    android:layout_marginTop="5dp"
+                    tools:text="@string/long_text_tools_default"/>
 
                 <RatingBar
-                    style="?android:attr/ratingBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:numStars="5"
-                    android:rating="2.5"
+                    style="@style/AMFYTheme.RatingBar"
                     android:id="@+id/rating"
-                    android:layout_marginTop="20dp"
-                    />
-
+                    android:layout_marginTop="20dp" />
 
 
             </LinearLayout>

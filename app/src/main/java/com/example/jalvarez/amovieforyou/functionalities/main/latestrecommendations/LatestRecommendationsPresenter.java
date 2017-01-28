@@ -12,13 +12,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by jalvarez on 1/13/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
 
 public class LatestRecommendationsPresenter implements LatestRecommendationsContract.Presenter {
 
     private final LatestRecommendationsContract.View mLatestRecommendationsView;
-    private boolean mFirstLoad = true;
-
 
 
     public LatestRecommendationsPresenter(LatestRecommendationsContract.View latestRecommendationsView) {
@@ -34,20 +38,16 @@ public class LatestRecommendationsPresenter implements LatestRecommendationsCont
 
     @Override
     public void loadRecommendations() {
-
+        loadRecommendations(true);
     }
 
-    /**
-     * @param showLoadingUI Pass in true to display a loading icon in the UI
-     */
+
     private void loadRecommendations(final boolean showLoadingUI) {
         if (showLoadingUI) {
             mLatestRecommendationsView.setLoadingIndicator(true);
         }
-
         Recommendation[] recommendations = RecommendationsDummyData.getRecommendations();
         processRecommendations(Arrays.asList(recommendations));
-
         if (showLoadingUI) {
             mLatestRecommendationsView.setLoadingIndicator(false);
         }
@@ -57,10 +57,8 @@ public class LatestRecommendationsPresenter implements LatestRecommendationsCont
 
     private void processRecommendations(List<Recommendation> recommendations) {
         if (recommendations.isEmpty()) {
-            // Show a message indicating there are no tasks for that filter type.
             processEmptyRecommendations();
         } else {
-            // Show the list of tasks
             mLatestRecommendationsView.showRecommendations(recommendations);
         }
     }

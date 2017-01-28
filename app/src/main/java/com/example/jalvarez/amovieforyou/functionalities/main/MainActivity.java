@@ -1,6 +1,7 @@
 package com.example.jalvarez.amovieforyou.functionalities.main;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -13,19 +14,26 @@ import android.view.MenuItem;
 
 import com.example.jalvarez.amovieforyou.R;
 import com.example.jalvarez.amovieforyou.functionalities.main.latestrecommendations.LatestRecommendationsFragment;
-import com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas.NowOnCinemasContract;
+import com.example.jalvarez.amovieforyou.functionalities.main.latestrecommendations.LatestRecommendationsPresenter;
 import com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas.NowOnCinemasFragment;
 import com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas.NowOnCinemasPresenter;
 import com.example.jalvarez.amovieforyou.util.ActivityUtils;
-import com.example.jalvarez.amovieforyou.functionalities.main.latestrecommendations.LatestRecommendationsPresenter;
+
+/**
+ * Created by jalvarez on 1/13/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
+ */
+
 
 public class MainActivity extends AppCompatActivity {
-//        implements NavigationView.OnNavigationItemSelectedListener {
 
 
     private DrawerLayout mDrawerLayout;
-    private LatestRecommendationsPresenter mLatestRecommendationsPresenter;
-    private NowOnCinemasPresenter mNowOnCinemasPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +44,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) {
+            ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         // Setup the navigation drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -48,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Set the fragment
-
-
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
         if (fragment == null) {
@@ -58,15 +66,12 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager(), fragment, R.id.contentFrame);
         }
 
-
         if (fragment instanceof LatestRecommendationsFragment) {
-            mLatestRecommendationsPresenter = new LatestRecommendationsPresenter((LatestRecommendationsFragment) fragment);
+            new LatestRecommendationsPresenter((LatestRecommendationsFragment) fragment);
         }
         else if (fragment instanceof NowOnCinemasFragment) {
-            mNowOnCinemasPresenter = new NowOnCinemasPresenter((NowOnCinemasFragment) fragment);
+            new NowOnCinemasPresenter((NowOnCinemasFragment) fragment);
         }
-
-
 
     }
 
@@ -82,26 +87,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                // Open the navigation drawer when the home icon is selected from the toolbar.
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }
@@ -114,36 +113,25 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.nav_latests:
                                 // Set the fragment
                                 LatestRecommendationsFragment latestRecommendationsFragment = LatestRecommendationsFragment.newInstance();
                                 ActivityUtils.replaceFragmentInActivity(
                                         getSupportFragmentManager(), latestRecommendationsFragment, R.id.contentFrame);
-                                mLatestRecommendationsPresenter = new LatestRecommendationsPresenter(latestRecommendationsFragment);
+                                new LatestRecommendationsPresenter(latestRecommendationsFragment);
                                 break;
                             case R.id.nav_now_on_cinemas:
                                 NowOnCinemasFragment nowOnCinemasFragment = NowOnCinemasFragment.newInstance();
                                 ActivityUtils.replaceFragmentInActivity(
                                         getSupportFragmentManager(), nowOnCinemasFragment, R.id.contentFrame);
 
-                                mNowOnCinemasPresenter = new NowOnCinemasPresenter(nowOnCinemasFragment);
+                                new NowOnCinemasPresenter(nowOnCinemasFragment);
                                 break;
 
-//                            case R.id.list_navigation_menu_item:
-//                                // Do nothing, we're already on that screen
-//                                break;
-//                            case R.id.statistics_navigation_menu_item:
-//                                Intent intent =
-//                                        new Intent(TasksActivity.this, StatisticsActivity.class);
-//                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                startActivity(intent);
-//                                break;
-//                            default:
-//                                break;
                         }
+
                         // Close the navigation drawer when an item is selected.
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawers();

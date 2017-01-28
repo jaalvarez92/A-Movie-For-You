@@ -1,7 +1,6 @@
 package com.example.jalvarez.amovieforyou.data;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.common.base.Objects;
 
@@ -9,6 +8,12 @@ import java.util.Date;
 
 /**
  * Created by jalvarez on 1/13/17.
+ * This is a file created for the project A-Movie-For-You
+ *
+ * Javier Alvarez Gonzalez
+ * Android Developer
+ * javierag0292@gmail.com
+ * San Jose, Costa Rica
  */
 
 public class Recommendation {
