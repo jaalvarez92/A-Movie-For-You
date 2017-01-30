@@ -1,7 +1,8 @@
-package com.example.jalvarez.amovieforyou.data;
+package com.example.jalvarez.amovieforyou.data.movies.source;
 
 import android.support.annotation.NonNull;
 
+import com.example.jalvarez.amovieforyou.data.videos.Video;
 import com.google.common.base.Objects;
 import com.uwetrottmann.tmdb2.entities.Videos;
 

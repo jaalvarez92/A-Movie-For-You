@@ -13,6 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.jalvarez.amovieforyou.R;
+import com.example.jalvarez.amovieforyou.data.movies.source.MoviesRepository;
+import com.example.jalvarez.amovieforyou.data.movies.source.local.MoviesLocalDataSource;
+import com.example.jalvarez.amovieforyou.data.movies.source.remote.MoviesRemoteDataSource;
 import com.example.jalvarez.amovieforyou.functionalities.main.latestrecommendations.LatestRecommendationsFragment;
 import com.example.jalvarez.amovieforyou.functionalities.main.latestrecommendations.LatestRecommendationsPresenter;
 import com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas.NowOnCinemasFragment;
@@ -70,7 +73,8 @@ public class MainActivity extends AppCompatActivity {
             new LatestRecommendationsPresenter((LatestRecommendationsFragment) fragment);
         }
         else if (fragment instanceof NowOnCinemasFragment) {
-            new NowOnCinemasPresenter((NowOnCinemasFragment) fragment);
+
+            new NowOnCinemasPresenter( MoviesRepository.getInstance(MoviesRemoteDataSource.getInstance(), MoviesLocalDataSource.getInstance()),(NowOnCinemasFragment) fragment);
         }
 
     }
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                                 ActivityUtils.replaceFragmentInActivity(
                                         getSupportFragmentManager(), nowOnCinemasFragment, R.id.contentFrame);
 
-                                new NowOnCinemasPresenter(nowOnCinemasFragment);
+                                new NowOnCinemasPresenter( MoviesRepository.getInstance(MoviesRemoteDataSource.getInstance(), MoviesLocalDataSource.getInstance()), nowOnCinemasFragment);
                                 break;
 
                         }

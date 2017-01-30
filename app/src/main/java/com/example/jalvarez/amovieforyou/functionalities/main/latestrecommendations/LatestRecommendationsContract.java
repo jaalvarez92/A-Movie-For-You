@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.example.jalvarez.amovieforyou.base.BasePresenter;
 import com.example.jalvarez.amovieforyou.base.BaseView;
-import com.example.jalvarez.amovieforyou.data.Recommendation;
+import com.example.jalvarez.amovieforyou.data.recommendations.Recommendation;
 
 import java.util.List;
 

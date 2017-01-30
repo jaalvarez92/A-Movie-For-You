@@ -1,4 +1,4 @@
-package com.example.jalvarez.amovieforyou.data;
+package com.example.jalvarez.amovieforyou.data.videos;
 
 import android.support.annotation.NonNull;
 
@@ -23,7 +23,7 @@ public class Video {
     private final String mURL;
 
 
-    Video(Videos.Video video){
+    public Video(Videos.Video video){
         mName = video.name;
         mURL = "https://www.youtube.com/watch?v=" + video.key;
     }

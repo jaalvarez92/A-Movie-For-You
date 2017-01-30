@@ -1,7 +1,11 @@
 package com.example.jalvarez.amovieforyou.functionalities.main.moviedetail;
 
-import com.example.jalvarez.amovieforyou.data.Movie;
-import com.example.jalvarez.amovieforyou.data.source.TMDBApiHelper;
+import android.support.annotation.NonNull;
+
+import com.example.jalvarez.amovieforyou.data.movies.source.Movie;
+import com.example.jalvarez.amovieforyou.data.movies.source.MoviesDataSource;
+import com.example.jalvarez.amovieforyou.data.movies.source.MoviesRepository;
+import com.example.jalvarez.amovieforyou.data.movies.source.remote.TMDBApiHelper;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,13 +26,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 class MovieDetailPresenter implements MovieDetailContract.Presenter {
 
     private final MovieDetailContract.View mMovieDetail;
+    private final MoviesRepository mMoviesRepository;
     private boolean mFirstLoad = true;
     private String mId;
 
 
 
-    MovieDetailPresenter(MovieDetailContract.View movieDetailView, String id) {
-        mMovieDetail = checkNotNull(movieDetailView, "tasksView cannot be null!");
+    MovieDetailPresenter(@NonNull MoviesRepository moviesRepository, @NonNull MovieDetailContract.View movieDetailView, String id) {
+        mMoviesRepository = checkNotNull(moviesRepository, "moviesRepository cannot be null!");
+        mMovieDetail = checkNotNull(movieDetailView, "moviesView cannot be null!");
         mMovieDetail.setPresenter(this);
         mId = id;
     }
@@ -50,12 +56,11 @@ class MovieDetailPresenter implements MovieDetailContract.Presenter {
             mMovieDetail.setLoadingIndicator(true);
         }
 
-        new TMDBApiHelper().getMovie(mId, new Callback<com.uwetrottmann.tmdb2.entities.Movie>() {
 
+        mMoviesRepository.getMovie(mId, new MoviesDataSource.GetMovieCallback() {
             @Override
-            public void onResponse(Call<com.uwetrottmann.tmdb2.entities.Movie> call, Response<com.uwetrottmann.tmdb2.entities.Movie> response) {
+            public void onMovieLoaded(Movie movie) {
                 if (mMovieDetail.isActive()) {
-                    Movie movie = new Movie(response.body());
                     processMovie(movie);
                     if (showLoadingUI) {
                         mMovieDetail.setLoadingIndicator(false);
@@ -64,15 +69,14 @@ class MovieDetailPresenter implements MovieDetailContract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<com.uwetrottmann.tmdb2.entities.Movie> call, Throwable t) {
-                if (mMovieDetail.isActive()) {
+            public void onDataNotAvailable() {
+                if (mMovieDetail.isActive()){
+                    processError();
                     if (showLoadingUI) {
                         mMovieDetail.setLoadingIndicator(false);
-                        processError();
                     }
                 }
             }
-
         });
 
     }

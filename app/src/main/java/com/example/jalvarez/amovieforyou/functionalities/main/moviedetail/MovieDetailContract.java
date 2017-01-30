@@ -2,8 +2,8 @@ package com.example.jalvarez.amovieforyou.functionalities.main.moviedetail;
 
 import com.example.jalvarez.amovieforyou.base.BasePresenter;
 import com.example.jalvarez.amovieforyou.base.BaseView;
-import com.example.jalvarez.amovieforyou.data.Movie;
-import com.example.jalvarez.amovieforyou.data.Video;
+import com.example.jalvarez.amovieforyou.data.movies.source.Movie;
+import com.example.jalvarez.amovieforyou.data.videos.Video;
 
 /**
  * Created by jalvarez on 1/13/17.

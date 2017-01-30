@@ -2,8 +2,10 @@ package com.example.jalvarez.amovieforyou.functionalities.main.nowoncinemas;
 
 import android.support.annotation.NonNull;
 
-import com.example.jalvarez.amovieforyou.data.Movie;
-import com.example.jalvarez.amovieforyou.data.source.TMDBApiHelper;
+import com.example.jalvarez.amovieforyou.data.movies.source.Movie;
+import com.example.jalvarez.amovieforyou.data.movies.source.MoviesDataSource;
+import com.example.jalvarez.amovieforyou.data.movies.source.MoviesRepository;
+import com.example.jalvarez.amovieforyou.data.movies.source.remote.TMDBApiHelper;
 import com.uwetrottmann.tmdb2.entities.MovieResultsPage;
 
 import java.util.ArrayList;
@@ -27,12 +29,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class NowOnCinemasPresenter implements NowOnCinemasContract.Presenter {
 
+    private final MoviesRepository mMoviesRepository;
     private final NowOnCinemasContract.View mNowOnCinemasView;
     private boolean mFirstLoad = true;
 
 
 
-    public NowOnCinemasPresenter(NowOnCinemasContract.View latestRecommendationsView) {
+    public NowOnCinemasPresenter(MoviesRepository moviesRepository,  NowOnCinemasContract.View latestRecommendationsView) {
+        mMoviesRepository = checkNotNull(moviesRepository, "moviesRepository cannot be null!");
         mNowOnCinemasView = checkNotNull(latestRecommendationsView, "tasksView cannot be null!");
         mNowOnCinemasView.setPresenter(this);
     }
@@ -55,16 +59,10 @@ public class NowOnCinemasPresenter implements NowOnCinemasContract.Presenter {
             mNowOnCinemasView.setLoadingIndicator(true);
         }
 
-        TMDBApiHelper tmdbApiHelper = new TMDBApiHelper();
-        tmdbApiHelper.getMoviesOnCinemas(new Callback<MovieResultsPage>() {
+        mMoviesRepository.getMovies(new MoviesDataSource.LoadMoviesCallback() {
             @Override
-            public void onResponse(Call<MovieResultsPage> call, Response<MovieResultsPage> response) {
-                if (mNowOnCinemasView.isActive()) {
-                    List<com.uwetrottmann.tmdb2.entities.Movie> moviesResponse = response.body().results;
-                    List<Movie> movies = new ArrayList<>();
-                    for (com.uwetrottmann.tmdb2.entities.Movie movie : moviesResponse) {
-                        movies.add(new Movie(movie));
-                    }
+            public void onMoviesLoaded(List<Movie> movies) {
+                if (mNowOnCinemasView.isActive()){
                     processMovies(movies);
                     if (showLoadingUI) {
                         mNowOnCinemasView.setLoadingIndicator(false);
@@ -73,16 +71,15 @@ public class NowOnCinemasPresenter implements NowOnCinemasContract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<MovieResultsPage> call, Throwable t) {
+            public void onDataNotAvailable() {
                 if (mNowOnCinemasView.isActive()) {
+                    processEmptyMovies();
                     if (showLoadingUI) {
                         mNowOnCinemasView.setLoadingIndicator(false);
                     }
                 }
             }
         });
-
-
 
     }
 

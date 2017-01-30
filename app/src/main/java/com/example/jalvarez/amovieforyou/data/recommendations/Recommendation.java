@@ -1,7 +1,8 @@
-package com.example.jalvarez.amovieforyou.data;
+package com.example.jalvarez.amovieforyou.data.recommendations;
 
 import android.support.annotation.NonNull;
 
+import com.example.jalvarez.amovieforyou.data.movies.source.Movie;
 import com.google.common.base.Objects;
 
 import java.util.Date;

@@ -2,7 +2,7 @@ package com.example.jalvarez.amovieforyou.functionalities.main.latestrecommendat
 
 import android.support.annotation.NonNull;
 
-import com.example.jalvarez.amovieforyou.data.Recommendation;
+import com.example.jalvarez.amovieforyou.data.recommendations.Recommendation;
 import com.example.jalvarez.amovieforyou.data.dummy.RecommendationsDummyData;
 
 import java.util.Arrays;

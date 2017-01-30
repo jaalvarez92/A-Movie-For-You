@@ -15,8 +15,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.jalvarez.amovieforyou.R;
-import com.example.jalvarez.amovieforyou.data.Movie;
-import com.example.jalvarez.amovieforyou.data.Video;
+import com.example.jalvarez.amovieforyou.data.movies.source.Movie;
+import com.example.jalvarez.amovieforyou.data.videos.Video;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import static com.google.common.base.Preconditions.checkNotNull;

@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.jalvarez.amovieforyou.R;
+import com.example.jalvarez.amovieforyou.data.movies.source.MoviesRepository;
+import com.example.jalvarez.amovieforyou.data.movies.source.local.MoviesLocalDataSource;
+import com.example.jalvarez.amovieforyou.data.movies.source.remote.MoviesRemoteDataSource;
 import com.example.jalvarez.amovieforyou.util.ActivityUtils;
 
 /**
@@ -36,6 +39,6 @@ public class MovieDetailActivity extends AppCompatActivity {
                     getSupportFragmentManager(), movieDetailFragment, R.id.contentFrame);
         }
 
-        new MovieDetailPresenter(movieDetailFragment, movieId);
+        new MovieDetailPresenter(MoviesRepository.getInstance(MoviesRemoteDataSource.getInstance(), MoviesLocalDataSource.getInstance()), movieDetailFragment, movieId);
     }
 }

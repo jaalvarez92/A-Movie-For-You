@@ -1,6 +1,6 @@
 package com.example.jalvarez.amovieforyou.data.dummy;
 
-import com.example.jalvarez.amovieforyou.data.Recommendation;
+import com.example.jalvarez.amovieforyou.data.recommendations.Recommendation;
 
 import java.util.Date;
 import java.util.Random;

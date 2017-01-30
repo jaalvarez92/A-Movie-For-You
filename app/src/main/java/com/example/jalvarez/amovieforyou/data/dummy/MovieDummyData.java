@@ -1,6 +1,6 @@
 package com.example.jalvarez.amovieforyou.data.dummy;
 
-import com.example.jalvarez.amovieforyou.data.Movie;
+import com.example.jalvarez.amovieforyou.data.movies.source.Movie;
 
 import java.util.Random;
 

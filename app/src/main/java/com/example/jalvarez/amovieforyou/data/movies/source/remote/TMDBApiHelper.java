@@ -1,4 +1,4 @@
-package com.example.jalvarez.amovieforyou.data.source;
+package com.example.jalvarez.amovieforyou.data.movies.source.remote;
 
 import com.uwetrottmann.tmdb2.Tmdb;
 import com.uwetrottmann.tmdb2.entities.AppendToResponse;
