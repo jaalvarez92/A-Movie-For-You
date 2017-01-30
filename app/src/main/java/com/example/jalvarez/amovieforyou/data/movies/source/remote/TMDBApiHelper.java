@@ -6,6 +6,8 @@ import com.uwetrottmann.tmdb2.entities.MovieResultsPage;
 import com.uwetrottmann.tmdb2.enumerations.AppendToResponseItem;
 import com.uwetrottmann.tmdb2.services.MoviesService;
 
+import java.util.Locale;
+
 import retrofit2.Callback;
 
 
@@ -25,12 +27,12 @@ public class TMDBApiHelper {
 
 
     public void getMoviesOnCinemas(Callback<MovieResultsPage> callback){
-        moviesService.nowPlaying(1, "en").enqueue(callback);
+        moviesService.nowPlaying(1, Locale.getDefault().getLanguage()).enqueue(callback);
     }
 
 
     public void getMovie(String mId, Callback<com.uwetrottmann.tmdb2.entities.Movie> callback){
-        moviesService.summary(Integer.parseInt(mId),"en", new AppendToResponse(AppendToResponseItem.VIDEOS)).enqueue(callback);
+        moviesService.summary(Integer.parseInt(mId),Locale.getDefault().getLanguage(), new AppendToResponse(AppendToResponseItem.VIDEOS)).enqueue(callback);
     }
 
 
