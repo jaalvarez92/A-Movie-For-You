@@ -58,18 +58,32 @@ public class MoviesRepository implements MoviesDataSource {
 
         if (mCachedMovies != null && !mCacheIsDirty) {
             callback.onMoviesLoaded(new ArrayList<>(mCachedMovies.values()));
-
             return;
         }
 
         if (mCacheIsDirty) {
-            getMoviesFromRemoteDataSource(callback);
+            getMoviesFromRemoteDataSource(new LoadMoviesCallback() {
+                @Override
+                public void onMoviesLoaded(List<Movie> movies) {
+                    callback.onMoviesLoaded(movies);
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+                    mMoviesLocalDataSource.getMovies(callback);
+                }
+            });
         } else {
             mMoviesLocalDataSource.getMovies(new LoadMoviesCallback() {
                 @Override
                 public void onMoviesLoaded(List<Movie> movies) {
-                    refreshCache(movies);
-                    callback.onMoviesLoaded(new ArrayList<>(mCachedMovies.values()));
+                    if (movies.size() > 0) {
+                        refreshCache(movies);
+                        callback.onMoviesLoaded(new ArrayList<>(mCachedMovies.values()));
+                    }
+                    else{
+                        onDataNotAvailable();
+                    }
                 }
 
                 @Override
@@ -122,7 +136,7 @@ public class MoviesRepository implements MoviesDataSource {
 
                     @Override
                     public void onDataNotAvailable() {
-                        callback.onDataNotAvailable();
+                        mMoviesLocalDataSource.getMovie(movieId, callback);
                     }
                 });
             }

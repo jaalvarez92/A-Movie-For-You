@@ -45,15 +45,12 @@ public class MoviesLocalDataSource implements MoviesDataSource {
 //        Realm realm = Realm.getDefaultInstance();
         RealmResults<Movie> realmMovies = mRealm.where(Movie.class)
                 .findAll();
-        if (realmMovies.size() > 0) {
+
             for (Movie movie : realmMovies) {
                 movies.add(movie);
             }
             callback.onMoviesLoaded(movies);
-        }
-        else {
-            callback.onDataNotAvailable();
-        }
+
 //        realm.close();
     }
 
@@ -63,13 +60,8 @@ public class MoviesLocalDataSource implements MoviesDataSource {
         Movie realmMovie = mRealm.where(Movie.class)
                 .equalTo("id", movieId)
                 .findFirst();
-        if (realmMovie != null) {
             callback.onMovieLoaded(realmMovie);
-        }
-        else{
-            callback.onDataNotAvailable();
-        }
-//        realm.close();
+        //  realm.close();
     }
 
     @Override
