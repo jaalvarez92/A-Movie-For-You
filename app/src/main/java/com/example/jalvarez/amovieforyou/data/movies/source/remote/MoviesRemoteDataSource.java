@@ -76,6 +76,20 @@ public class MoviesRemoteDataSource implements MoviesDataSource {
     }
 
     @Override
+    public void deleteAllMovies() { }
+
+    @Override
+    public void deleteMovie(@NonNull String movieId) { }
+
+    @Override
+    public void saveMovie(@NonNull Movie movie) { }
+
+    @Override
+    public void updateMovie(@NonNull String movieId, @NonNull Movie movie) {
+
+    }
+
+    @Override
     public void refreshMovies() { }
 
 

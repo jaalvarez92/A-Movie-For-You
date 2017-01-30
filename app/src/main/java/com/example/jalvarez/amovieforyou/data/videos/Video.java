@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.uwetrottmann.tmdb2.entities.Videos;
 
+import io.realm.RealmObject;
+
 /**
  * Created by jalvarez on 1/27/17.
  * This is a file created for the project A-Movie-For-You
@@ -14,28 +16,40 @@ import com.uwetrottmann.tmdb2.entities.Videos;
  * San Jose, Costa Rica
  */
 
-public class Video {
+public class Video extends RealmObject {
 
     @NonNull
-    private final String mName;
+    private String name;
 
     @NonNull
-    private final String mURL;
+    private String URL;
 
+    public Video() {
+
+    }
 
     public Video(Videos.Video video){
-        mName = video.name;
-        mURL = "https://www.youtube.com/watch?v=" + video.key;
+        this.name = video.name;
+        this.URL = "https://www.youtube.com/watch?v=" + video.key;
     }
 
 
     @NonNull
     public String getName() {
-        return mName;
+        return this.name;
     }
 
     @NonNull
     public String getURL() {
-        return mURL;
+        return this.URL;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setURL(String URL) {
+        URL =  URL;
+    }
+
 }

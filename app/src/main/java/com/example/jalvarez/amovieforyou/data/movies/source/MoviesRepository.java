@@ -28,15 +28,8 @@ public class MoviesRepository implements MoviesDataSource {
 
     private final MoviesDataSource mMoviesLocalDataSource;
 
-    /**
-     * This variable has package local visibility so it can be accessed from tests.
-     */
     Map<String, Movie> mCachedMovies;
 
-    /**
-     * Marks the cache as invalid, to force an update the next time data is requested. This variable
-     * has package local visibility so it can be accessed from tests.
-     */
     private boolean mCacheIsDirty = false;
 
     private MoviesRepository(@NonNull MoviesDataSource moviesRemoteDataSource,
@@ -45,13 +38,6 @@ public class MoviesRepository implements MoviesDataSource {
         mMoviesLocalDataSource = checkNotNull(moviesLocalDataSource);
     }
 
-    /**
-     * Returns the single instance of this class, creating it if necessary.
-     *
-     * @param moviesRemoteDataSource the backend data source
-     * @param moviesLocalDataSource  the device storage data source
-     * @return the {@link MoviesRepository} instance
-     */
     public static MoviesRepository getInstance(MoviesDataSource moviesRemoteDataSource,
                                                MoviesDataSource moviesLocalDataSource) {
         if (INSTANCE == null) {
@@ -60,10 +46,6 @@ public class MoviesRepository implements MoviesDataSource {
         return INSTANCE;
     }
 
-    /**
-     * Used to force {@link #getInstance(MoviesDataSource, MoviesDataSource)} to create a new instance
-     * next time it's called.
-     */
     public static void destroyInstance() {
         INSTANCE = null;
     }
@@ -76,6 +58,7 @@ public class MoviesRepository implements MoviesDataSource {
 
         if (mCachedMovies != null && !mCacheIsDirty) {
             callback.onMoviesLoaded(new ArrayList<>(mCachedMovies.values()));
+
             return;
         }
 
@@ -112,11 +95,16 @@ public class MoviesRepository implements MoviesDataSource {
         mMoviesLocalDataSource.getMovie(movieId, new GetMovieCallback() {
             @Override
             public void onMovieLoaded(Movie movie) {
-                if (mCachedMovies == null) {
-                    mCachedMovies = new LinkedHashMap<>();
+                if (movie.getVideos().size() > 0) {
+                    if (mCachedMovies == null) {
+                        mCachedMovies = new LinkedHashMap<>();
+                    }
+                    mCachedMovies.put(movie.getId(), movie);
+                    callback.onMovieLoaded(movie);
                 }
-                mCachedMovies.put(movie.getId(), movie);
-                callback.onMovieLoaded(movie);
+                else{
+                    onDataNotAvailable();
+                }
             }
 
             @Override
@@ -128,6 +116,7 @@ public class MoviesRepository implements MoviesDataSource {
                             mCachedMovies = new LinkedHashMap<>();
                         }
                         mCachedMovies.put(movie.getId(), movie);
+                        mMoviesLocalDataSource.updateMovie(movieId, movie);
                         callback.onMovieLoaded(movie);
                     }
 
@@ -142,6 +131,26 @@ public class MoviesRepository implements MoviesDataSource {
     }
 
     @Override
+    public void deleteAllMovies() {
+
+    }
+
+    @Override
+    public void deleteMovie(@NonNull String movieId) {
+
+    }
+
+    @Override
+    public void saveMovie(@NonNull Movie movie) {
+
+    }
+
+    @Override
+    public void updateMovie(@NonNull String movieId, @NonNull Movie movie) {
+
+    }
+
+    @Override
     public void refreshMovies() {
         mCacheIsDirty = true;
     }
@@ -152,7 +161,7 @@ public class MoviesRepository implements MoviesDataSource {
             @Override
             public void onMoviesLoaded(List<Movie> movies) {
                 refreshCache(movies);
-//                refreshLocalDataSource(movies);
+                refreshLocalDataSource(movies);
                 callback.onMoviesLoaded(new ArrayList<>(mCachedMovies.values()));
             }
 
@@ -174,12 +183,12 @@ public class MoviesRepository implements MoviesDataSource {
         mCacheIsDirty = false;
     }
 
-//    private void refreshLocalDataSource(List<Movie> movies) {
-//        mMoviesLocalDataSource.deleteAllTasks();
-//        for (movie task : movies) {
-//            Save in db
-//        }
-//    }
+    private void refreshLocalDataSource(List<Movie> movies) {
+        mMoviesLocalDataSource.deleteAllMovies();
+        for (Movie movie : movies) {
+            mMoviesLocalDataSource.saveMovie(movie);
+        }
+    }
 
     @Nullable
     private Movie getMovieWithId(@NonNull String id) {

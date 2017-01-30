@@ -35,6 +35,7 @@ public class NowOnCinemasContract {
 
     interface Presenter extends BasePresenter {
 
+        void loadMovies(boolean forceUpdate);
 
         void openMovieDetails(@NonNull Movie requestedMovie);
 

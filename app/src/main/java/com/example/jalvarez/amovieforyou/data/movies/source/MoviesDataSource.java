@@ -34,6 +34,14 @@ public interface MoviesDataSource {
 
     void getMovie(@NonNull String movieId, @NonNull GetMovieCallback callback);
 
+    void deleteAllMovies();
+
+    void deleteMovie(@NonNull String movieId);
+
+    void saveMovie(@NonNull Movie movie);
+
+    void updateMovie(@NonNull String movieId, @NonNull Movie movie);
+
     void refreshMovies();
 
 

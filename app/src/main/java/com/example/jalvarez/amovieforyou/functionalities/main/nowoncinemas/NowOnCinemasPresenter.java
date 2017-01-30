@@ -37,26 +37,30 @@ public class NowOnCinemasPresenter implements NowOnCinemasContract.Presenter {
 
     public NowOnCinemasPresenter(MoviesRepository moviesRepository,  NowOnCinemasContract.View latestRecommendationsView) {
         mMoviesRepository = checkNotNull(moviesRepository, "moviesRepository cannot be null!");
-        mNowOnCinemasView = checkNotNull(latestRecommendationsView, "tasksView cannot be null!");
+        mNowOnCinemasView = checkNotNull(latestRecommendationsView, "moviesView cannot be null!");
         mNowOnCinemasView.setPresenter(this);
     }
 
     @Override
     public void start() {
-        loadMovies(mFirstLoad);
-        if (mFirstLoad){
-            mFirstLoad = false;
-        }
-
+        loadMovies(false);
     }
 
 
-    /**
-     * @param showLoadingUI Pass in true to display a loading icon in the UI
-     */
-    private void loadMovies(final boolean showLoadingUI) {
+    @Override
+    public void loadMovies(boolean forceUpdate) {
+        loadMovies(forceUpdate || mFirstLoad, true);
+        mFirstLoad = false;
+    }
+
+
+    private void loadMovies(boolean forceUpdate, final boolean showLoadingUI) {
         if (showLoadingUI) {
             mNowOnCinemasView.setLoadingIndicator(true);
+        }
+
+        if (forceUpdate) {
+            mMoviesRepository.refreshMovies();
         }
 
         mMoviesRepository.getMovies(new MoviesDataSource.LoadMoviesCallback() {
