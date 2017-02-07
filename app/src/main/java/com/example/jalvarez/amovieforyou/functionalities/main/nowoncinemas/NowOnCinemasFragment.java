@@ -81,7 +81,8 @@ public class NowOnCinemasFragment extends Fragment implements NowOnCinemasContra
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         listView.setLayoutManager(mLayoutManager);
         listView.setAdapter(mListAdapter);
-
+        RecyclerView.ItemDecoration dividerItemDecoration = new android.support.v7.widget.DividerItemDecoration(getActivity(), android.support.v7.widget.DividerItemDecoration.VERTICAL);
+        listView.addItemDecoration(dividerItemDecoration);
         noMoviesView = root.findViewById(R.id.noMovies);
 
         return root;
